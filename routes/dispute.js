@@ -2,11 +2,12 @@
 const express = require('express')
 const router = express.Router()
 const passport = require('../config/passport')
+
 const User = require('../models/user')
 const Rating = require('../models/rating')
 const Dispute = require('../models/dispute')
 
-router.
+router
 
 
     .post('/', validateToken, (req, res, next) => {
@@ -50,9 +51,7 @@ router.
                     res.status(500).send()
                 })
         } else {
-            res.status(500).send({
-                'no updates provided'
-            })
+            res.status(500).json({ error: 'no updates provided' })
         }
     })
 
@@ -66,3 +65,5 @@ router.
                 res.status(500).send()
             })
     })
+    
+module.exports = router

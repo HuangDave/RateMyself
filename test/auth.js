@@ -2,6 +2,7 @@
 const assert = require('chai').assert
 const request = require('supertest')
 const app = require('../server')
+const sequelize = require('../db/database')
 const User = require('../models/user')
 
 const user = {
@@ -11,9 +12,10 @@ const user = {
 }
 
 describe('Auth', () => {
-
+    
     before( done => {
-        User.sync().done( () => done() )
+        sequelize.sync()
+            .then( () => done() )
     })
 
     after( done => {
@@ -30,7 +32,6 @@ describe('Auth', () => {
         it('should be able to register a new user.', done => {
             request(app)
                 .post('/auth/register')
-                .set('Content-Type', 'application/x-www-form-urlencoded')
                 .send({
                     email: user.email,
                     password: user.password,
@@ -48,7 +49,6 @@ describe('Auth', () => {
         it('should be able to authenticate a registered user', done => {
             request(app)
                 .post('/auth/login')
-                .set('Content-Type', 'application/x-www-form-urlencoded')
                 .send({
                     email: user.email,
                     password: user.password

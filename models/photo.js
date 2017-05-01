@@ -1,6 +1,6 @@
 
 const Sequelize = require('sequelize')
-const sequelize = require('../db/database').sequelize
+const sequelize = require('../db/database')
 const Rating = require('./rating')
 
 'use strict'

@@ -1,27 +1,13 @@
 
+const environment = process.env.NODE_ENV
+const connection = require('../config/config')[environment].connection
 const Sequelize = require('sequelize')
 
-var sequelize
-
-/*
-exports.initialize = path => {
-    sequelize = new Sequelize('database', 'username', 'password', {
-        dialect: 'sqlite',
-        storage: path //'./db/database.db'
-    })
-    sequelize.sync({ force: true })
-}
+sequelize = new Sequelize('database', 'username', 'password', {
+    dialect: 'sqlite',
+    //logging: false,
+    storage: connection //'./db/database.db'
+})
+sequelize.sync({ force: true })
 
 module.exports = sequelize
-*/
-
-
-exports.initialize = function(path) {
-    sequelize = new Sequelize('database', 'username', 'password', {
-        dialect: 'sqlite',
-        storage: path //'./db/database.db'
-    })
-    sequelize.sync({ force: true })
-}
-
-exports.sequelize = sequelize

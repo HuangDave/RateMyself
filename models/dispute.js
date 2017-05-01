@@ -1,6 +1,6 @@
 
 const Sequelize = require('sequelize')
-const sequelize = require('../db/database').sequelize
+const sequelize = require('../db/database')
 const User = require('./user')
 const Rating = require('./rating')
 

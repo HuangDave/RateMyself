@@ -1,6 +1,6 @@
 
 const Sequelize = require('sequelize')
-const sequelize = require('../db/database').sequelize
+const sequelize = require('../db/database')
 const bcrypt = require("bcrypt-nodejs")
 const Photo = require('./photo')
 

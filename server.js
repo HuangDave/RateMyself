@@ -8,7 +8,7 @@ const app = express()
 const env = process.env.NODE_ENV || 'development'
 const port = process.env.PORT || 8080
 
-const db = require('./db/database').initialize(port == 8080 ? './test/test.db' : './db/database.db')           // initialize/connect to db
+const _ = require('./db/database')                      // initialize/connect to db
 
 const authRouter = require('./routes/auth')
 const userRouter = require('./routes/user')

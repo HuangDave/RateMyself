@@ -3,8 +3,8 @@
   "description": "RateMyself",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "test": "node ./node_modules/mocha/bin/mocha"
+    "start": "NODE_ENV=deploy node server.js",
+    "test": "NODE_ENV=test node ./node_modules/mocha/bin/mocha"
   },
   "dependencies": {
     "bcrypt-nodejs": "^0.0.3",
