@@ -2,6 +2,7 @@
 const assert = require('chai').assert
 const request = require('supertest')
 const app = require('../server')
+
 const sequelize = require('../db/database')
 const User = require('../models/user')
 
@@ -12,7 +13,7 @@ const user = {
 }
 
 describe('Auth', () => {
-    
+
     before( done => {
         sequelize.sync()
             .then( () => done() )
