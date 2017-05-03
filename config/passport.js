@@ -18,6 +18,9 @@ passport
         }, register))
 
 function authenticate(email, password, done) {
+    console.log('attempting to authenticate user: ' + JSON.stringify({
+        email: email, password: password
+    }));
     User.findOne({
         where: { email: email }
     })
@@ -38,6 +41,9 @@ function authenticate(email, password, done) {
 }
 
 function register(req, email, password, done) {
+    console.log('attempting to register user: ' + JSON.stringify({
+        name: req.body.name, email: email, password: password
+    }));
     User.create({
         email: email,
         password: password,

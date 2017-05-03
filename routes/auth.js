@@ -15,7 +15,11 @@ router
     // @param {String} password
     //
     // @return {Object} On success, returns an object consisting of the user info and a JWT
-    .post("/register", passport.authenticate("local-signup", { session: false }), generateToken, response)
+    .post("/register", passport.authenticate("local-signup", {
+        successRedirect : '/profile', // redirect to the secure profile section
+        failureRedirect : '/register', // redirect back to the signup page if there is an error
+        failureFlash : true // allow flash messages
+    }))
 
     // Authenticate a user.
     //

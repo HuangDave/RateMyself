@@ -25,6 +25,13 @@ app
     .use(bodyParser.urlencoded({ extended: false }))
     .use(bodyParser.json())
     .use(passport.initialize())
+
+
+        .get('/', (req, res, next) => {
+            res.render('RegisterForm')
+        })
+
+
     .use('/auth', authRouter)
     .use('/user', userRouter)
     .use('/rating', ratingRouter)
