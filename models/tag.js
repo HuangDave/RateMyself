@@ -3,7 +3,7 @@
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define('Tag', {
         rid: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
             references: {
                 model: 'Rating',
                 key: 'rid'

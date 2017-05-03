@@ -27,4 +27,8 @@ router
     // @return {Object} On success, returns an object consisting of the user info and a JWT
     .post("/login", passport.authenticate('local', { session: false }), generateToken, response)
 
+    .get('/register', (req, res, next) => {
+        res.send('register page')
+    })
+
 module.exports = router

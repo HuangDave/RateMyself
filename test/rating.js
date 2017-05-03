@@ -8,7 +8,14 @@ const Rating = require('../models').Rating
 
 const data = require('./test_data.json').users
 
-function authenticate(email, password) {
+// Helper functions
+
+// Authenticate a user.
+//
+// @param {String} email
+// @param {String} password
+// @return {Object} On success, returns an object containing the User and JWT.
+authenticate = (email, password) => {
     return new Promise( (resolve, reject) => {
         request(app)
             .post('/auth/login')
@@ -39,6 +46,11 @@ describe('Rating', () => {
             })
         }))
         .then( () => {
+            const user = data[0]
+            return authenticate(user.email, user.password)
+        })
+        .then( user => {
+            jwt = user
             done()
         })
         .catch( error => {
@@ -54,25 +66,6 @@ describe('Rating', () => {
         .then( () => {
             done()
         })
-    })
-
-    it('should be able to authenticate a user', done => {
-        const user = data[0]
-        console.log('authenticating user: ' + JSON.stringify(user));
-        request(app)
-            .post('/auth/login')
-            .send({
-                email: user.email,
-                password: user.password
-            })
-            .expect(200, (error, res) => {
-                if (error) throw new Error(error)
-                console.log('error ' + error);
-                assert(res.body.user.email == user.email)
-                assert(res.body.token)
-                jwt = res.body
-                done()
-            })
     })
 
     describe('Add', () => {
@@ -144,12 +137,26 @@ describe('Rating', () => {
         })
     })
 
+    describe.skip('Helpfullness', () => {
+
+        it('should allow a user to provide feedback on if a rating was helpful or non-helpful', done => {
+            authenticate(data[1].email, data[1].password)
+                .then( user => {
+                    done()
+                })
+        })
+    })
+
     describe('Dispute', () => {
+
+        var disputer
+        var dispute = null
 
         it('a user should be able to dispute a rating', done => {
             authenticate(data[2].email, data[2].password)
-                .then( disputer => {
-                    console.log('authenticated disputer' + JSON.stringify(disputer));
+                .then( result => {
+                    console.log('authenticated disputer' + JSON.stringify(result))
+                    disputer = result
                     request(app)
                         .post('/dispute/')
                         .set('Authorization', 'bearer ' + disputer.token)
@@ -162,8 +169,26 @@ describe('Rating', () => {
                             if (error) throw new Error(error)
                             assert(res.body)
                             console.log(JSON.stringify(res.body))
+                            dispute = res.body
                             done()
                         })
+                })
+        })
+
+        it('should be able to update a descpute', done => {
+            request(app)
+                .put('/dispute/'+dispute.did)
+                .set('Authorization', 'bearer ' + disputer.token)
+                .send({
+                    uid: disputer.user.uid,
+                    description: 'new description'
+                })
+                .expect(200, (error, res) => {
+                    if (error) throw new Error(error)
+                    assert(res.body)
+                    assert(res.body.description == 'new description')
+                    console.log(JSON.stringify(res.body))
+                    done()
                 })
         })
     })

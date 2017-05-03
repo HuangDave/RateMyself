@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const passport = require('passport')
 
 const app = express()
-const env = process.env.NODE_ENV || 'development'
+const env = process.env.NODE_ENV
 const port = process.env.PORT || 8080
 
 const models = require('./models')                      // initialize/connect to db

@@ -2,9 +2,9 @@
 'use strict'
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define('Dispute', {
-        did: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+        did: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
         rid: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
             references: {
                 model: 'Rating',
                 key: 'rid'

@@ -8,7 +8,9 @@ const Rating = require('../models').Rating
 
 router
 
-
+    //
+    // Requires the user to be authenticated.
+    //
     // @endpoint {POST} /rating/{uid}
     //
     // @param {String} uid         - ID of the user posting the new rating.
@@ -21,26 +23,29 @@ router
         const rating = req.body.rating
         const description = req.body.description
         return Rating.create({
-            rater_id: rater_id,
-            ratee_id: ratee_id,
-            rating: rating,
-            description: description
-        })
-        .then( rating => {
-            res.status(201).json(rating)
-        })
-        .catch( error => {
-            console.log('POST /rating/'+ratee_id+'/ratings - error occured while adding a new rating: ' + JSON.stringify({
                 rater_id: rater_id,
                 ratee_id: ratee_id,
                 rating: rating,
                 description: description
-            }))
-            console.log('error: ' + error)
-            res.status(500).send()
-        })
+            })
+            .then( rating => {
+                res.status(201).json(rating)
+            })
+            .catch( error => {
+                console.log('POST /rating/'+ratee_id+'/ratings - error occured while adding a new rating: ' + JSON.stringify({
+                    rater_id: rater_id,
+                    ratee_id: ratee_id,
+                    rating: rating,
+                    description: description
+                }))
+                console.log('error: ' + error)
+                res.status(500).send()
+            })
     })
 
+    //
+    // Requires the user to be authenticated.
+    //
     // @endpoint {PUT} /rating/{rid}
     //
     //@param {String} rid -
@@ -66,8 +71,12 @@ router
             })
     })
 
-    // @param {String} rid -
-    // @body  {String} ishelpful
+    // Allows a user to provide feedback on a rating. A user can only provide one feedback per rating.
+    // Increments the helpful or non-helpful count of the rating.
+    // Requires the user to be authenticated.
+    //
+    // @param {String}  rid       -
+    // @body  {Boolean} ishelpful -
     .post('/:rid/helpfulness', validateToken, (req,res,next) => {
         Rating.findOne({ where: { rid: req.params.rid } })
             .then( rating => {
@@ -83,6 +92,12 @@ router
             })
     })
 
+    // Query a specific rating.
+    //
+    // @endpoint {GET} /rating/{rid}
+    //
+    // @param {String} rid - ID of the rating.
+    //
     .get('/:rid', (req, res, next) => {
         Rating.findOne({ where: { rid: req.params.rid } })
             .then( rating => {
@@ -95,7 +110,12 @@ router
             })
     })
 
-    // @param {String} uid -
+    // Query all ratings of a user.
+    //
+    // @endpoint {GET} /rating/all/{uid}
+    //
+    // @param {String} uid - ID of the user.
+    //
     .get('/all/:uid', (req, res, next) => {
         Rating.findAll({ where: { ratee_id: req.params.uid } })
             .then( query => {
@@ -107,8 +127,13 @@ router
             })
     })
 
-    // @param {String} rid
-    // @body  {String} uid
+    // Remove a rating by its ID, only the owner of the rating is able to remove it.
+    // Requires the user to be authenticated.
+    //
+    // @endpoint {DELETE} /rating/{rid}
+    //
+    // @param {String} rid - ID of the rating.
+    // @body  {String} uid - ID of the user making the request.
     .delete('/:rid', validateToken, (req,res,next) => {
         const rid = req.params.rid
 

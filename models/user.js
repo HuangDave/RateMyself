@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         password:       { type: DataTypes.STRING, allowNull: false },
         name:           { type: DataTypes.STRING, allowNull: false },
         pid:            {
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
             references: {
                 model: 'Photo',
                 key: 'pid'

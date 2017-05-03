@@ -26,14 +26,14 @@ function authenticate(email, password, done) {
             if (User.isPassword(user.password, password)) { // correct password...
                 done(null, user)
             } else {
-                return Promise.reject('Incorrect username/password.')
+                return Promise.reject(('Incorrect username/password.'))
             }
         } else {
             return Promise.reject('This email is not registered.')
         }
     })
     .catch( error => {
-        done(error)
+        done(new Error(error))
     })
 }
 
