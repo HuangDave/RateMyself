@@ -5,32 +5,17 @@ const app = require('../server')
 
 const User = require('../models').User
 
-const user = {
-    email: 'test@email.com',
-    password: '1234',
-    name: 'John Appleseed'
-}
+const user = require('./test_data.json').users[0]
 
 describe('Auth', () => {
 
-    before( done => {
-        setTimeout(() => {
-
-            done()
-        }, 1000)
-    })
-
     after( done => {
-        User.destroy({
-            where: { email: user.email }
-        })
-        .then( deleted => {
-            assert(deleted == 1)
-            done()
-        })
+        User.destroy({ where: { email: user.email } })
+            .then( () => { done() })
     })
 
-    describe('Registration - ', () => {
+    describe('Registration', () => {
+
         it('should be able to register a new user.', done => {
             request(app)
                 .post('/auth/register')
@@ -43,11 +28,15 @@ describe('Auth', () => {
                     if (error) throw new Error(error)
                     assert(res.body.user.email == user.email)
                     assert(res.body.token)
+                    console.log("Registered user: " + JSON.stringify(res.body.user))
+                    console.log("JWT: " + JSON.stringify(res.body.token))
                     done()
                 })
         })
     })
+
     describe('Login', () => {
+
         it('should be able to authenticate a registered user', done => {
             request(app)
                 .post('/auth/login')
@@ -59,6 +48,8 @@ describe('Auth', () => {
                     if (error) throw new Error(error)
                     assert(res.body.user.email == user.email)
                     assert(res.body.token)
+                    console.log("Authenticated user: " + JSON.stringify(res.body.user))
+                    console.log("JWT: " + JSON.stringify(res.body.token))
                     done()
                 })
         })

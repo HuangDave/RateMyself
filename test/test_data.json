@@ -1,0 +1,20 @@
+{
+    "users": [
+        {
+            "email": "test@email.com",
+            "password": "1234",
+            "name": "John Appleseed"
+        },
+        {
+            "email": "test1@email.com",
+            "password": "12345",
+            "name": "Adam Appleseed"
+        },
+        {
+            "email": "test2@email.com",
+            "password": "12345",
+            "name": "John Test"
+        }
+
+    ]
+}
