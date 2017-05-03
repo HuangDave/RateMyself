@@ -3,8 +3,7 @@ const assert = require('chai').assert
 const request = require('supertest')
 const app = require('../server')
 
-const sequelize = require('../db/database')
-const User = require('../models/user')
+const User = require('../models').User
 
 const user = {
     email: 'test@email.com',
@@ -15,8 +14,10 @@ const user = {
 describe('Auth', () => {
 
     before( done => {
-        sequelize.sync()
-            .then( () => done() )
+        setTimeout(() => {
+
+            done()
+        }, 1000)
     })
 
     after( done => {

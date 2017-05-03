@@ -2,7 +2,8 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const jwt = require('jsonwebtoken')
-const User = require('../models/user')
+
+const User = require('../models').User
 const secret = require('./config').secret
 
 passport
@@ -46,7 +47,7 @@ function register(req, email, password, done) {
         done(null, user)    // callback to authenticate and provide JWT to user...
     })
     .catch(error => {
-        console.log('error occured while attempting to insert new user: ' + error)
+        console.log('/auth/register register(req, email, password, done) - error occured while attempting to insert new user: ' + error)
         done(error)         //
     })
 }

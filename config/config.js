@@ -1,10 +1,18 @@
 
 module.exports = {
-    "secret": "ECv7L96pXn1IbqdWC69wU4W71suk5dRx",
+    secret: "ECv7L96pXn1IbqdWC69wU4W71suk5dRx",
     deploy: {
-        connection: './db/database.db'
+        db: {
+            connection: './db/database.db',
+            username: 'username',
+            password: 'password'
+        }
     },
     test: {
-        connection: './test/test.db'
+        db: {
+            connection: './test/test.db',
+            username: 'username',
+            password: 'password'
+        }
     }
 }

@@ -1,9 +1,30 @@
 
-const Sequelize = require('sequelize')
-const sequelize = require('../db/database')
-const User = require('./user')
-const Rating = require('./rating')
+'use strict'
+module.exports = (sequelize, DataTypes) => {
+    return sequelize.define('Dispute', {
+        did: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+        rid: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'Rating',
+                key: 'rid'
+            }
+        },
+        uid: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'User',
+                key: 'uid'
+            }
+        },
+        description: { type: DataTypes.STRING }
+    }, {
+        timestamps: true,
+        tableName: 'Dispute'
+    })
+}
 
+/*
 'use strict'
 const Dispute = sequelize.define('Dispute', {
     did: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
@@ -39,3 +60,4 @@ module.exports = Dispute
     'FOREIGN KEY (rid) REFERENCES Rating(rid) ON DELETE CASCADE,' +
     'FOREIGN KEY (uid) REFERENCES User(uid)' +
 ')'
+*/

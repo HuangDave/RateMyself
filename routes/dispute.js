@@ -3,9 +3,9 @@ const express = require('express')
 const router = express.Router()
 const passport = require('../config/passport')
 
-const User = require('../models/user')
-const Rating = require('../models/rating')
-const Dispute = require('../models/dispute')
+const User = require('../models').User
+const Rating = require('../models').Rating
+const Dispute = require('../models').Dispute
 
 router
 
@@ -65,5 +65,5 @@ router
                 res.status(500).send()
             })
     })
-    
+
 module.exports = router

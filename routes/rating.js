@@ -2,31 +2,35 @@
 const express = require('express')
 const router = express.Router()
 const passport = require('../config/passport')
-const User = require('../models/user')
-const Rating = require('../models/rating')
+
+const User = require('../models').User
+const Rating = require('../models').Rating
 
 router
 
 
-    .post('/:uid/ratings', validateToken, (req, res, next) => {
-        const rater_id = req.params.uid
-        const ratee_id = req.body.ratee_id
+    .post('/:uid', validateToken, (req, res, next) => {
+        const rater_id = req.body.rater_id
+        const ratee_id = req.params.uid
+        const rating = req.body.rating
         const description = req.body.description
         return Rating.create({
             rater_id: rater_id,
             ratee_id: ratee_id,
+            rating: rating,
             description: description
         })
         .then( rating => {
             res.status(201).json(rating)
         })
-        .catch( errro => {
-            console.log('POST /rating/'+rater_id+'/ratings - error occured while adding a new rating: ' + JSON.stringify({
+        .catch( error => {
+            console.log('POST /rating/'+ratee_id+'/ratings - error occured while adding a new rating: ' + JSON.stringify({
                 rater_id: rater_id,
                 ratee_id: ratee_id,
+                rating: rating,
                 description: description
             }))
-            console.log('POST /rating/:uid/ratings - error: ' + error)
+            console.log('error: ' + error)
             res.status(500).send()
         })
     })
