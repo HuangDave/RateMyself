@@ -22,8 +22,8 @@ const ratingRouter = require('./routes/rating')
 const disputeRouter = require('./routes/dispute')
 
 app
-    .engine('html', require('ejs').renderFile)
-    .set('view engine', 'html')                          // required for Heroku
+    //.engine('html', require('ejs').renderFile)
+    .set('view engine', 'ejs')                          // required for Heroku
     .set('views', path.join(__dirname, 'views'))
 
     .use(bodyParser.urlencoded({ extended: false }))
@@ -32,10 +32,7 @@ app
     .use(passport.initialize())
     .use(passport.session())
 
-
-    .get('/', (req, res, next) => {
-        res.render('register')
-    })
+    .get('/', (req, res, next) => res.render('index'))
 
     .use('/auth', authRouter)
     .use('/user', userRouter)

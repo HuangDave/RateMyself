@@ -7,7 +7,6 @@
     "test": "NODE_ENV=test node ./node_modules/mocha/bin/mocha"
   },
   "dependencies": {
-    "angular": "^1.6.4",
     "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.15.2",
     "ejs": "^1.0.0",
