@@ -134,6 +134,7 @@ router
     //
     // @param {String} rid - ID of the rating.
     // @body  {String} uid - ID of the user making the request.
+    // 
     .delete('/:rid', validateToken, (req,res,next) => {
         const rid = req.params.rid
 

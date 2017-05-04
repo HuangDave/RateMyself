@@ -3,6 +3,7 @@ const express = require('express')
 const expressSession = require('express-session')
 const bodyParser = require('body-parser')
 const passport = require('passport')
+const path = require('path')
 
 const app = express()
 const env = process.env.NODE_ENV
@@ -21,16 +22,20 @@ const ratingRouter = require('./routes/rating')
 const disputeRouter = require('./routes/dispute')
 
 app
-    .set('view engine', 'ejs')                          // required for Heroku
+    .engine('html', require('ejs').renderFile)
+    .set('view engine', 'html')                          // required for Heroku
+    .set('views', path.join(__dirname, 'views'))
+
     .use(bodyParser.urlencoded({ extended: false }))
     .use(bodyParser.json())
+
     .use(passport.initialize())
+    .use(passport.session())
 
 
-        .get('/', (req, res, next) => {
-            res.render('RegisterForm')
-        })
-
+    .get('/', (req, res, next) => {
+        res.render('register')
+    })
 
     .use('/auth', authRouter)
     .use('/user', userRouter)
