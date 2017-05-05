@@ -20,8 +20,7 @@ router
     })
 
     .get('/all?:limit?', (req, res, next) => {
-        console.log('querying all users limit:' + req.params.limit);
-        User.findAll({ limit: req.params.limit})
+        User.findAll({ limit: req.query.limit})
             .then( results => {
                 res.status(200).json(results)
             })
@@ -29,7 +28,5 @@ router
                 res.status(500).send(error)
             })
     })
-
-
 
 module.exports = router

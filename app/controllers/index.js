@@ -1,9 +1,8 @@
 
 'use strict'
 angular
-    .module('ratemyself', ['ngRoute'])
+    .module('ratemyself', [])
     .controller('homeController', ($scope, $http, $location) => {
-        $scope.users = []
         $scope.reload = () => {
             $http({
                 method: 'GET',
@@ -11,8 +10,7 @@ angular
                 headers: {'Content-Type': 'application/json'}
             })
             .success( res => {
-                alert(JSON.stringify(res[0]))
-                $scope.users = res.data
+                $scope.users = res
             })
             .error( error => {
                 alert('query failed: ' + JSON.stringify(error))

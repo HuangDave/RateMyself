@@ -9,7 +9,6 @@ const Rating = require('../models').Rating
 router
 
     //
-    // Requires the user to be authenticated.
     //
     // @endpoint {POST} /rating/{uid}
     //
@@ -17,7 +16,7 @@ router
     // @body  {String} rater_id    - ID of the user being rated.
     // @body  {Int}    rating      - Rating must be a real number between from 0 to 5.
     // @body  {String} description -
-    .post('/', validateToken, (req, res, next) => {
+    .post('/', (req, res, next) => {
         const rater_id = req.body.rater_id
         const ratee_id = req.body.ratee_id
         const rating = req.body.rating
@@ -44,13 +43,12 @@ router
     })
 
     //
-    // Requires the user to be authenticated.
     //
     // @endpoint {PUT} /rating/{rid}
     //
     //@param {String} rid -
     //@body  {String} uid -
-    .put('/:rid', validateToken, (req, res, next) => {
+    .put('/:rid', (req, res, next) => {
         const uid = req.body.uid
         Rating.findOne({ where: { rid: req.params.rid } })
             .then( rating => {
@@ -73,11 +71,10 @@ router
 
     // Allows a user to provide feedback on a rating. A user can only provide one feedback per rating.
     // Increments the helpful or non-helpful count of the rating.
-    // Requires the user to be authenticated.
     //
     // @param {String}  rid       -
     // @body  {Boolean} ishelpful -
-    .post('/:rid/helpfulness', validateToken, (req,res,next) => {
+    .post('/:rid/helpfulness', (req,res,next) => {
         Rating.findOne({ where: { rid: req.params.rid } })
             .then( rating => {
                 const update = req.body.ishelpful ? 'helpful' : 'not_helpful'
@@ -145,14 +142,13 @@ router
     })
 
     // Remove a rating by its ID, only the owner of the rating is able to remove it.
-    // Requires the user to be authenticated.
     //
     // @endpoint {DELETE} /rating/{rid}
     //
     // @param {String} rid - ID of the rating.
     // @body  {String} uid - ID of the user making the request.
     //
-    .delete('/:rid', validateToken, (req,res,next) => {
+    .delete('/:rid', (req,res,next) => {
         const rid = req.params.rid
 
         Rating.findOne({ where: { rid: rid } })

@@ -10,7 +10,6 @@ const Dispute = require('../models').Dispute
 router
 
     // Allows a user to post a dispute about a rating.
-    // Requires the user to be authenticated.
     //
     // @endpoint {POST} /dispute/
     //
@@ -18,7 +17,7 @@ router
     // @body {String} rid - ID of the rating being disputed.
     // @body {String} descripting - Explanation for the dispute.
     //
-    .post('/', validateToken, (req, res, next) => {
+    .post('/', (req, res, next) => {
         const uid = req.body.uid
         const rid = req.body.rid
         const description = req.params.description
@@ -37,7 +36,6 @@ router
     })
 
     // Allows the disputer to update the description of their dispute for a rating.
-    // Requires the user to be authenticated.
     //
     // @endpoint {PUT} /dispute/{did}
     //
@@ -45,7 +43,7 @@ router
     // @body  {String} uid - ID of the disputer.
     // @body  {String} description - New description to update.
     //
-    .put('/:did', validateToken, (req, res, next) => {
+    .put('/:did', (req, res, next) => {
         const did = req.params.did
         const uid = req.body.uid
         const description = req.body.description
@@ -90,13 +88,12 @@ router
     })
 
     // Remove a dispute by its ID.
-    // Requires the user to be authenticated.
     //
     // @endpoint {DELETE} /dispute/{did}
     //
     // @param {String} did - ID of the dispute to remove.
     //
-    .delete('/:did', validateToken, (req, res, next) => {
+    .delete('/:did', (req, res, next) => {
         Dispute.destroy({ where: { did: req.params.did } })
             .then( result => {
                 res.status(200).json(result)
