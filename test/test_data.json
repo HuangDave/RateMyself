@@ -1,20 +1,19 @@
 {
     "users": [
         {
-            "email": "test@email.com",
-            "password": "1234",
-            "name": "John Appleseed"
+            "name": "Marilyn Barker",
+            "email": "marilynbarker@rotodyne.com",
+            "password": "1234"
         },
         {
-            "email": "test1@email.com",
-            "password": "12345",
-            "name": "Adam Appleseed"
+            "name": "Prince Moreno",
+            "email": "princemoreno@rotodyne.com",
+            "password": "1234"
         },
         {
-            "email": "test2@email.com",
-            "password": "12345",
-            "name": "John Test"
+            "name": "Witt Roach",
+            "email": "wittroach@rotodyne.com",
+            "password": "1234"
         }
-
     ]
 }

@@ -16,15 +16,16 @@ models.Dispute.sync({ force: false })
 models.Photo.sync({ force: false })
 models.Tag.sync({ force: false })
 
+const index = require('./routes/index')
 const authRouter = require('./routes/auth')
 const userRouter = require('./routes/user')
 const ratingRouter = require('./routes/rating')
 const disputeRouter = require('./routes/dispute')
 
 app
-    //.engine('html', require('ejs').renderFile)
     .set('view engine', 'ejs')                          // required for Heroku
-    .set('views', path.join(__dirname, 'views'))
+    .set('views', path.join(__dirname, '/app/views'))
+    .use(express.static(path.join(__dirname, 'app')))
 
     .use(bodyParser.urlencoded({ extended: false }))
     .use(bodyParser.json())
@@ -32,8 +33,8 @@ app
     .use(passport.initialize())
     .use(passport.session())
 
-    .get('/', (req, res, next) => res.render('index'))
-
+    //.get('/', (req, res, next) => res.render('index'))
+    .use('/', index)
     .use('/auth', authRouter)
     .use('/user', userRouter)
     .use('/rating', ratingRouter)

@@ -127,6 +127,23 @@ router
             })
     })
 
+    // Query all ratings.
+    //
+    // @endpoint {GET} /rating/all/{uid}
+    //
+    // @param {String} uid - ID of the user.
+    //
+    .get('/recent', (req, res, next) => {
+        Rating.findAll({ limit: req.body.limit })
+            .then( query => {
+                res.status(200).json(query)
+            })
+            .catch( error => {
+                console.log('GET /rating/all/:uid - error while getting all ratings for user: ' + req.params.uid + ' ' + error)
+                res.status(500).send()
+            })
+    })
+
     // Remove a rating by its ID, only the owner of the rating is able to remove it.
     // Requires the user to be authenticated.
     //
@@ -134,7 +151,7 @@ router
     //
     // @param {String} rid - ID of the rating.
     // @body  {String} uid - ID of the user making the request.
-    // 
+    //
     .delete('/:rid', validateToken, (req,res,next) => {
         const rid = req.params.rid
 

@@ -1,0 +1,49 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html ng-app="ratemyself">
+<head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="index.js"></script>
+
+        <!-- CSS ===================== -->
+        <!-- load bootstrap -->
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+        <style>
+
+        </style>
+</head>
+
+<nav ng-controller='navController' class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="">RateMyself</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="/">Home</a></li>
+      <li><a href="/register">Register</a></li>
+    </ul>
+  </div>
+</nav>
+
+<body ng-controller="homeController" ng-init="reload()">
+    <div class="container">
+        <div ng-repeat="user in users">
+            <h2>{{user.name}}</h2>
+            <div>{{user.description}}</div>
+        </div>
+    </div>
+</body>
+
+<!-- Angular -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
+<script src="controllers/index.js"></script>
+
+</html>

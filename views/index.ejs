@@ -21,45 +21,22 @@
 
     <!-- Angular -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
-    <script>
-    angular.module('app', [])
-        .config( ($httpProvider, $httpParamSerializerJQLikeProvider) => {
-            $httpProvider.defaults.transformRequest.unshift($httpParamSerializerJQLikeProvider.$get())
-            $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8'
-        })
-        .controller('loginController', ($scope, $http) => {
-            $scope.login = () => {
-                $http({
-                    method: 'POST',
-                    url: 'http://localhost:8080/auth/login',
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                    data: {
-                        email: 'huangd95@yahoo.com',//$scope.user.email,
-                        password: '1234'//$scope.user.password
-                    }
-                })
-                .success( res => {
-                    alert('logged in: ' + JSON.stringify(res))
-                })
-                .error( error => {
-                    alert('login failed: ' + JSON.stringify(error))
-                })
-            }
-        })
-    </script>
+    <script src="controllers/index.js"></script>
 
 </head>
-<nav class="navbar navbar-default">
+<nav ng-controller='navController' class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" href="#">RateMyself</a>
     </div>
     <ul class="nav navbar-nav">
       <li class="active"><a href="index.html">Home</a></li>
-      <li><a href="register.html">Register</a></li>
+      <li><a href="/register">Register</a></li>
     </ul>
   </div>
 </nav>
+
+
 <html lang="en">
 <head>
 
@@ -69,10 +46,9 @@
   <p>Improve other peoples lives by rating them</p>
 </div>
 
-
 <!-- apply angular app and controller to our body -->
-<body ng-controller="loginController">
-<div class="container">
+<body ng-controller="homeController">
+<div ng-if="showDiv" class="container">
 <div class="col-sm-8 col-sm-offset-2">
 
     <!-- PAGE HEADER -->
@@ -98,7 +74,7 @@
         </div>
 
         <!-- SUBMIT BUTTON -->
-        <button type="submit" class="btn btn-primary" ng-click="login()">Login</button>
+        <button type="submit" class="btn btn-primary" ng-click="login(user.email, user.password)">Login</button>
 
     </form>
 
@@ -107,7 +83,12 @@
 </div><!-- /container -->
 </body>
 
-<div class = "jumbotron">
+<div ng-controller="ratingsController" class = "jumbotron">
 <h1>All Ratings below</h1>
+<div  ng-init="reloadView()">
+<ul ng-repeat="rating in ratings">
+    <p>rating.description</p>
+</ul>
+</div>
 </div>
 </html>
