@@ -11,6 +11,7 @@ router
     //
     // @endpoint {POST} /auth/register
     //
+    // @param {String} name
     // @param {String} email
     // @param {String} password
     //

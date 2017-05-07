@@ -3,6 +3,9 @@ var _this
 
 'use strict'
 module.exports = (sequelize, DataTypes) => {
+
+    const User = sequelize.import('./user')
+
     _this = sequelize.define('Rating', {
         rid:         { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
         rater_id:    {
@@ -31,6 +34,20 @@ module.exports = (sequelize, DataTypes) => {
         classMethods: {
             associate: (models) => {
                 _this.hasMany(models.Feedback)
+            },
+            serialize: (rating) => {
+                var result = JSON.parse(JSON.stringify(rating))
+                return User.serialize(rating.rater_id)
+                            .then( user => {
+                                result.rater = user
+                                return User.serialize(rating.ratee_id)
+                            })
+                            .then( user => {
+                                result.ratee = user
+                                result.ratee_id = undefined
+                                result.rater_id = undefined
+                                return result
+                            })
             }
         },
         hooks: {
@@ -42,6 +59,8 @@ module.exports = (sequelize, DataTypes) => {
     })
     return _this
 }
+
+serialize = (rating) =
 
 updateHook = {
     before: (rating, options, next) => {
