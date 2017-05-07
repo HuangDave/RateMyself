@@ -18,8 +18,9 @@ angular
                 }
             })
             .success( res => {
+                alert(JSON.stringify(res.token))
                 $window.sessionStorage.token = res.token
-                $location.path('/')
+                $window.location.assign('/')
             })
             .error( error => {
                 alert('login failed: ' + JSON.stringify(error))

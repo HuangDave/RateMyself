@@ -10,7 +10,7 @@ const config    = require('../config/config')[env].db
 
 const sequelize = new Sequelize('database', 'username', 'password', {
     dialect: 'sqlite',
-    logging: false,
+    logging: true,
     storage: config.connection
 })
 

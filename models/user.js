@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
             beforeCreate: user => user.set('password', bcrypt.hashSync(user.password))
         },
         classMethods: {
-            isPassword: (encodedPassword, password) => {
+            isPassword: (password, encodedPassword) => {
                 return bcrypt.compareSync(password, encodedPassword)
             },
             serialize: (uid) => {

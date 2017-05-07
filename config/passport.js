@@ -26,10 +26,11 @@ function authenticate(email, password, done) {
     })
     .then( user => {
         if (user != null) {
-            if (User.isPassword(user.password, password)) { // correct password...
+            if (User.isPassword(password, user.password)) { // correct password...
+                console.log('authentication succcessful');
                 done(null, user)
             } else {
-                return Promise.reject(('Incorrect username/password.'))
+                return Promise.reject('Incorrect username/password.')
             }
         } else {
             return Promise.reject('This email is not registered.')

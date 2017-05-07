@@ -1,4 +1,6 @@
 
+//const baseURL = process.env.PORT == 8080 ? 'http://localhost:8080/' : 'https://cmpe138ratemyself.herokuapp.com/'
+
 'use strict'
 angular
     .module('ratemyself', [])

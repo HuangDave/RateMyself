@@ -52,7 +52,6 @@ router
     //
     // @param {String} rid -
     // @body  {String} uid -
-    // @body  {Number} rating
     //
     .put('/:rid', (req, res, next) => {
         const uid = req.body.uid
@@ -60,8 +59,7 @@ router
             .then( rating => {
                 if (uid == rating.rater_id) {
                     return rating.updateAttributes({
-                        description : req.body.description,
-                        rating      : req.body.rating
+                        description : req.body.description
                     })
                 } else {
                     // TODO: -
@@ -103,7 +101,7 @@ router
     //
     // @param {String} rid - ID of the rating.
     //
-    .get('/id/:rid', (req, res, next) => {
+    .get('/id/:rid?', (req, res, next) => {
         Rating.findOne({ where: { rid: req.params.rid } })
             .then( rating => {
                 return Rating.serialize(rating)
@@ -125,7 +123,11 @@ router
     // @param {String} uid - ID of the user.
     //
     .get('/all/:uid', (req, res, next) => {
-        Rating.findAll({ where: { ratee_id: req.params.uid } })
+        Rating.findAll({
+                where: {
+                    ratee_id: req.params.uid
+                }
+            })
             .then( query => {
                 return Promise.all(query.map( rating => {
                     return Rating.serialize(rating)
@@ -148,6 +150,36 @@ router
     //
     .get('/recent/:limit?', (req, res, next) => {
         Rating.findAll({ limit: req.query.limit })
+            .then( query => {
+                return Promise.all(query.map( rating => {
+                    return Rating.serialize(rating)
+                }))
+            })
+            .then( query => {
+                res.status(200).json(query)
+            })
+            .catch( error => {
+                console.log('GET /rating/all/:uid - error while getting all ratings for user: ' + req.params.uid + ' ' + error)
+                res.status(500).send()
+            })
+    })
+
+    .post('/find', (req, res, next) => {
+        var query = {}
+        if (req.body.description != undefined) query['description'] = { $like: '%'+req.body.description+'%' }
+
+        if (req.body['rating[0][op]'] != undefined) {
+            const rating = req.body['rating[0][value]']
+            switch(req.body['rating[0][op]']) {
+                case 'gt': query.rating = { $gt: rating }
+                default: query.rating = rating
+            }
+        }
+        console.log('query: ' + JSON.stringify(query));
+        Rating.findAll({
+                where: query,
+                limit: req.body.limit
+            })
             .then( query => {
                 return Promise.all(query.map( rating => {
                     return Rating.serialize(rating)
