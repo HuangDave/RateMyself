@@ -29,7 +29,7 @@ router
                 description : description
             })
             .then( rating => {
-                return serializedUsersForRating(rating)
+                return Rating.serialize(rating)
             })
             .then( serializedData => {
                 res.status(201).json(serializedData)

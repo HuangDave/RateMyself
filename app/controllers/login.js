@@ -19,6 +19,7 @@ angular
             })
             .success( res => {
                 alert(JSON.stringify(res.token))
+                $window.sessionStorage.uid = res.user.uid
                 $window.sessionStorage.token = res.token
                 $window.location.assign('/')
             })

@@ -2,6 +2,10 @@
 <html ng-app="ratemyself">
     <head>
         <title></title>
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+        <style>
+        body    { padding-top:30px; }
+        </style>
 
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
         <script type="text/javascript">
@@ -13,7 +17,7 @@
                   requireBase: false
                 });
             })
-            .controller('showuserC', ($scope, $location, $http) => {
+            .controller('showuserC', ($scope, $location, $http, $window) => {
                 const uid = $location.search().id
                 $scope.reload = () => {
                     $http({
@@ -31,7 +35,6 @@
                         })
                         .success( ratings => {
                             $scope.ratings = ratings
-                            alert(JSON.stringify($scope.ratings[0]))
                         })
                         .error( error => {
                             alert('query failed: ' + JSON.stringify(error))
@@ -41,27 +44,125 @@
                         alert('query failed: ' + JSON.stringify(error))
                     })
                 }
+                $scope.addRating = (description, rating) => {
+                   $http({
+                       method: 'POST',
+                       url: 'http://localhost:8080/rating/',
+                       headers: {'Content-Type': 'application/json'},
+                       data: {
+                           rater_id: $window.sessionStorage.uid,
+                           ratee_id: uid,
+                           description: description,
+                           rating: rating
+                       }
+                   })
+                   .success( ratings => {
+                       $scope.showDisputes = []
+                       for (var i = 0; i < $scope.showDisputes.length; i++) {
+                           $scope.showDisputes[i] = false
+                       }
+                       $window.location.reload()
+                   })
+                   .error( error => {
+                   })
+                }
+                $scope.getDisputes = (rating) => {
+                    const idx = $scope.ratings.indexOf(rating)
+                    return $scope.ratings[idx].disputes
+                }
+                $scope.toggleDispute = (rating) => {
+                    const idx = $scope.ratings.indexOf(rating)
+                    $scope.showDisputes[idx] = $scope.showDisputes[idx] ? false : true
+                }
+                $scope.showDispute = (rating) => {
+                    return $scope.showDisputes[$scope.ratings.indexOf(rating)]
+                }
+                $scope.dispute = (rid, description) => {
+                    alert('adding dispute: ' + JSON.stringify(rid) + ' ' + description)
+                    $http({
+                        method: 'POST',
+                        url: 'http://localhost:8080/dispute/',
+                        headers: {'Content-Type': 'application/json'},
+                        data: {
+                            uid: $window.sessionStorage.uid,
+                            rid: rid,
+                            description: description,
+                        }
+                    })
+                    .success( ratings => {
+                        $window.location.reload()
+                    })
+                    .error( error => {
+                    })
+                }
             })
         </script>
     </head>
     <body ng-controller="showuserC" ng-init="reload()">
-        <p>asdfsdf</p>
         <div>
             <p>{{user.name}}</p>
             <p>{{user.email}}</p>
             <p>{{user.description}}</p>
         </div>
-        <table>
-            <tr>
-                <th>Rater</th>
-                <th>Description</th>
-                <th>Rating</th>
-            </tr>
-            <tr ng-repeat="r in ratings">
-                <td>{{r.rater.name}}</td>
-                <td>{{r.description}}</td>
-                <td>{{r.rating}}</td>
-            </tr>
-        </table>
+
+        <div>
+            <p>Add a Rating:</p>
+            Description: <input type = "text"  class = "form-control" ng-model="rating.description">
+            Rating: <input type = "number"  class = "form-control" ng-model="rating.rating" min = "1" max = "5">
+            <button type="submit" ng-click="addRating(rating.description, rating.rating)" class="btn btn-default">Submit</button>
+        </div>
+
+        <div ng-repeat="r in ratings" class="cell">
+        <style media="screen">
+            .cell {
+                padding: 2em;
+                margin: 2em;
+                border: 3px solid black;
+            }
+            </style>
+            <table>
+                <tr>
+                    <th>Rater</th>
+                    <th>Description</th>
+                    <th>Rating</th>
+                    <th>Helpful</th>
+                    <th>Not Helpful</th>
+                </tr>
+                <tbody>
+                    <tr>
+                        <td>{{r.rater.name}}</td>
+                        <td>{{r.description}}</td>
+                        <td>{{r.rating}}</td>
+                        <td>{{r.helpful}}</td>
+                        <td>{{r.not_helpful}}</td>
+                        <td>
+                            <button type="submit" ng-click="toggleDispute(r)" class="btn btn-default">Dispute</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="">
+                <div class="cell" ng-show="showDispute(r)">
+                    <p>Dispute this Rating:</p>
+                    Description: <input type = "text"  class = "form-control" ng-model="rating.description">
+                    <button type="submit" ng-click="dispute(r.rid, rating.description)" class="btn btn-default">Submit</button>
+                </div>
+            </div>
+            <div class="cell">
+                <table>
+                    <tr>
+                        <th>Disputer</th>
+                        <th>Description</th>
+                    </tr>
+                    <tbody ng-repeat="d in getDisputes(r)">
+                        <tr>
+                            <td>{{d.user.name}}</td>
+                            <td>{{d.description}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </body>
 </html>

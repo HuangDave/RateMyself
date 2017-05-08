@@ -5,6 +5,7 @@ var _this
 module.exports = (sequelize, DataTypes) => {
 
     const User = sequelize.import('./user')
+    const Dispute = sequelize.import('./dispute')
 
     _this = sequelize.define('Rating', {
         rid:         { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
@@ -47,6 +48,18 @@ module.exports = (sequelize, DataTypes) => {
                                 result.ratee_id = undefined
                                 result.rater_id = undefined
                                 return result
+                            })
+                            .then( result => {
+                                return Dispute.findAll({ where: { rid: result.rid } })
+                                    .then( disputes => {
+                                        return Promise.all(disputes.map(d => {
+                                            return Dispute.serialize(d)
+                                        }))
+                                        .then( serializedData => {
+                                            result.disputes = serializedData
+                                            return result
+                                        })
+                                    })
                             })
             }
         },
