@@ -27,20 +27,23 @@ router
 
     // Get all users
     //
-    // @endpoint /user/all?limit?={limit}
+    // @endpoint /user/all?name?={name}limit?={limit}
     //
     // @query {String} name
     // @query {Number} limit
     //
     .get('/all?:name?:limit?', (req, res, next) => {
+        console.log('query: ' + req.query.name + ' limit ' + req.query.limit);
         var query = {}
         if (req.query.name != undefined) {
-            query['name'] = { $like: '%'+req.query.name+'%'}
+            const name = req.query.name
+            query['where'] = { name: { $like: '%'+name+'%'} }
         }
-        User.findAll({
-            where: query
-            limit: req.query.limit
-        })
+        if (req.query.limit != undefined) {
+            query['limit'] = req.query.limit
+        }
+        console.log('query: ' + JSON.stringify(query));
+        User.findAll(query)
             .then( results => {
                 res.status(200).json(results)
             })

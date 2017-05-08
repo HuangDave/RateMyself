@@ -19,3 +19,21 @@ angular
             })
         }
     })
+    .controller('searchController', ($scope, $http, $window) => {
+        $scope.search = () => {
+            $http({
+                method: 'GET',
+                url: 'http://localhost:8080/user/all?name='+$scope.name+'&limit=50',
+                headers: {'Content-Type': 'application/json'}
+            })
+            .success( res => {
+                $scope.query = res
+            })
+            .error( error => {
+                alert('query failed: ' + JSON.stringify(error))
+            })
+        }
+        $scope.select = (user) => {
+            $window.location.assign('/showuser/user?id='+user.uid)
+        }
+    })

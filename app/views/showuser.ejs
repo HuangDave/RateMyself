@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html ng-app="ratemyself">
+    <head>
+        <title></title>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+        <script type="text/javascript">
+        angular
+            .module('ratemyself', [])
+            .config( ($locationProvider) => {
+                $locationProvider.html5Mode({
+                  enabled: true,
+                  requireBase: false
+                });
+            })
+            .controller('showuserC', ($scope, $location, $http) => {
+                const uid = $location.search().id
+                $scope.reload = () => {
+                    $http({
+                        method: 'GET',
+                        url: 'http://localhost:8080/user/id/'+uid,
+                        headers: {'Content-Type': 'application/json'}
+                    })
+                    .success( res => {
+                        $scope.user = res
+
+                        $http({
+                            method: 'GET',
+                            url: 'http://localhost:8080/rating/all/'+uid,
+                            headers: {'Content-Type': 'application/json'}
+                        })
+                        .success( ratings => {
+                            $scope.ratings = ratings
+                            alert(JSON.stringify($scope.ratings[0]))
+                        })
+                        .error( error => {
+                            alert('query failed: ' + JSON.stringify(error))
+                        })
+                    })
+                    .error( error => {
+                        alert('query failed: ' + JSON.stringify(error))
+                    })
+                }
+            })
+        </script>
+    </head>
+    <body ng-controller="showuserC" ng-init="reload()">
+        <p>asdfsdf</p>
+        <div>
+            <p>{{user.name}}</p>
+            <p>{{user.email}}</p>
+            <p>{{user.description}}</p>
+        </div>
+        <table>
+            <tr>
+                <th>Rater</th>
+                <th>Description</th>
+                <th>Rating</th>
+            </tr>
+            <tr ng-repeat="r in ratings">
+                <td>{{r.rater.name}}</td>
+                <td>{{r.description}}</td>
+                <td>{{r.rating}}</td>
+            </tr>
+        </table>
+    </body>
+</html>
