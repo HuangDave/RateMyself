@@ -10,7 +10,7 @@ describe("Query", () => {
 
     describe("User", () => {
 
-        it('1 - Find a user with uid 13b16c46-91ba-4c58-a1ae-f00174fd6105', done => {
+        it('Find a user with uid 13b16c46-91ba-4c58-a1ae-f00174fd6105', done => {
             User.findAll({ where: { uid: '13b16c46-91ba-4c58-a1ae-f00174fd6105' } })
                 .then( result => {
                     assert(result[0].uid == '13b16c46-91ba-4c58-a1ae-f00174fd6105')
@@ -19,7 +19,7 @@ describe("Query", () => {
                 })
         })
 
-        it('2 - Find a user named Lynda West', done => {
+        it('Find a user named Lynda West', done => {
             User.findAll({ where: { name: 'Lynda West' } })
                 .then( result => {
                     assert(result)
@@ -28,7 +28,7 @@ describe("Query", () => {
                 })
         })
 
-        it('3 - Find a user with the email bobbihobbs@caxt.com', done => {
+        it('Find a user with the email bobbihobbs@caxt.com', done => {
             User.findAll({
                     where: { email: 'bobbihobbs@caxt.com' }
                 })
@@ -39,7 +39,7 @@ describe("Query", () => {
                 })
         })
 
-        it('4 - Find 5 users with excepteur in their description', done => {
+        it('Find 5 users with excepteur in their description', done => {
             User.findAll({
                     where: {
                         description: {
@@ -55,7 +55,7 @@ describe("Query", () => {
                 })
         })
 
-        it('5 - Find 5 users with caxt emails', done => {
+        it('Find 5 users with caxt emails', done => {
             User.findAll({
                     where: { email: { $like: '%caxt.com%' } },
                     limit: 5
@@ -67,7 +67,7 @@ describe("Query", () => {
                 })
         })
 
-        it('6 - Find users named Stanley or Christine', done => {
+        it('Find users named Stanley or Christine', done => {
             User.findAll({
                     where: {
                         name: {
@@ -82,7 +82,7 @@ describe("Query", () => {
                 })
         })
 
-        it('7 - Find the two newest users.', done => {
+        it('Find the two newest users.', done => {
             User.findAll({
                     limit: 2,
                     order: [ [ 'createdAt', 'DESC' ] ]
@@ -93,6 +93,62 @@ describe("Query", () => {
                     done()
                 })
         })
+    })
+
+    describe('Ratings', () => {
+
+        it('Find all ratings of a user.', done => {
+            Rating.findAll({
+                where: { ratee_id: '9333efbb-2618-4d92-9204-08ea4564cfae' }
+            })
+            .then( result => {
+                console.log(result.length)
+                console.log(JSON.stringify(result))
+                done()
+            })
+        })
+
+        it('Find ratings with a rating value of 5', done => {
+            Rating.findAll({
+                where: { rating: 5 }
+            })
+            .then( result => {
+                console.log(result.length)
+                console.log(JSON.stringify(result))
+                done()
+            })
+        })
+
+        it('Find ratings that are 2 or less.', done => {
+            Rating.findAll({
+                where: { rating: { $lte: 2 } }
+            })
+            .then( result => {
+                console.log(result.length)
+                console.log(JSON.stringify(result))
+                done()
+            })
+        })
+
+        it('Find rating between 2 and 4')
+
+        it('Find the 5 most recent ratings.', done => {
+            Rating.findAll({
+                limit: 5,
+                order: [ [ 'createdAt', 'DESC' ] ]
+            })
+            .then( result => {
+                console.log(result.length)
+                console.log(JSON.stringify(result))
+                done()
+            })
+        })
+
+        it('Find the top 5 most helpful ratings of a ratee.')
+
+        it('Find the least helpful rating of a ratee.')
+
+        it('Find ratings for a ratee that has _ in the description')
     })
 
 })

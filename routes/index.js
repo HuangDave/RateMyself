@@ -17,5 +17,8 @@ router
     .get('/test', (req, res, next) => {
         res.render('test')
     })
+    .get('/showuser/:uid', (req, res, next) => {
+        res.render('user')
+    })
 
 module.exports = router
