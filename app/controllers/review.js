@@ -19,15 +19,10 @@ angular
                 }
             })
             .success( res => {
-                alert(JSON.stringify(res))
                 $window.sessionStorage.token = res.token
                 $window.location.assign('/')
-
-                //var landingUrl = "http://localhost:8080/views/success" + $window.$location.host + "/auth/login";
-                //$window.$location.href = landingUrl;
-                //$window.$location = '/index'
             }
-            
+
             )
             .error( error => {
                 alert('login failed: ' + JSON.stringify(error))

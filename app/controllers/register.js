@@ -8,7 +8,6 @@ angular
     })
     .controller('registerController', ($scope, $http, $window, $location) => {
         $scope.register = (name, email, password, gender) => {
-            alert(gender)
             $http({
                 method: 'POST',
                 url: '/auth/register',
@@ -21,7 +20,6 @@ angular
                 }
             })
             .success( res => {
-                alert(JSON.stringify(res))
                 $window.sessionStorage.token = res.token
                 $window.location.assign('/')
             })
