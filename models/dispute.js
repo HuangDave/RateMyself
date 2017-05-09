@@ -1,7 +1,10 @@
 
+var sequelize
+
 'use strict'
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define('Dispute', {
+    const User = sequelize.import('./user')
+    sequelize = sequelize.define('Dispute', {
         did: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
         rid: {
             type: DataTypes.UUID,
@@ -22,7 +25,18 @@ module.exports = (sequelize, DataTypes) => {
         },
         description: { type: DataTypes.STRING }
     }, {
+        classMethods: {
+            serialize: (dispute) => {
+                var result = JSON.parse(JSON.stringify(dispute))
+                return User.serialize(dispute.uid)
+                    .then( user => {
+                        result.user = user
+                        return result
+                    })
+            }
+        },
         timestamps: true,
         tableName: 'Dispute'
     })
+    return sequelize
 }

@@ -1,15 +1,31 @@
 
 <!DOCTYPE html>
-<html ng-app='app'>
+<html ng-app='ratemyself'>
     <head>
         <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
-        <style>
-        body    { padding-top:30px; }
-        </style>
         <title>
             Registration
         </title>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+        <script src="controllers/register.js"></script>
+
     </head>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="">RateMyself</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="/">Home</a></li>
+                <li class="active"><a href="/register">Register</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/articles">Articles</a></li>
+            </ul>
+        </div>
+    </nav>
+
     <body>
 
         <div class="container" ng-controller='registerController'>
@@ -17,29 +33,34 @@
 
                 <h3>Registration</h3>
 
-                <form method="post" action="/auth/register">
+                <form>
 
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Name" name="name">
+                        <input type="text" class="form-control" placeholder="Name" name="name" ng-model="user.name">
                     </div>
 
                     <div class="form-group">
-                        <input type="email" class="form-control" placeholder="Email" name="email">
+                        <input type="email" class="form-control" placeholder="Email" name="email" ng-model="user.email">
                     </div>
 
                     <div class="form-group">
-                        <input type="password" class="form-control" placeholder="Password" name="password">
+                        <input type="password" class="form-control" placeholder="Password" name="password" ng-model="user.password">
                     </div>
 
                     <div class="form-group">
-                         <input type="password" class="form-control" placeholder="Confirm Password" name="password2">
+                        Gender
+                        <select name="gender" ng-model="user.gender">
+                          <option value="Male">M</option>
+                          <option value="Female">F</option>
+                        </select>
                     </div>
 
-                    <button type="submit" class="btn btn-default">Register</button>
+                    <button type="submit" class="btn btn-default" ng-click="register(user.name, user.email, user.password, user.gender)">Register</button>
 
                 </form>
 
             </div><!-- col-sm-8 -->
         </div><!-- /container -->
     </body>
+
 </html>

@@ -26,10 +26,11 @@ function authenticate(email, password, done) {
     })
     .then( user => {
         if (user != null) {
-            if (User.isPassword(user.password, password)) { // correct password...
+            if (User.isPassword(password, user.password)) { // correct password...
+                console.log('authentication succcessful');
                 done(null, user)
             } else {
-                return Promise.reject(('Incorrect username/password.'))
+                return Promise.reject('Incorrect username/password.')
             }
         } else {
             return Promise.reject('This email is not registered.')
@@ -47,7 +48,8 @@ function register(req, email, password, done) {
     User.create({
         email: email,
         password: password,
-        name: req.body.name
+        name: req.body.name,
+        gender: req.body.gender
     })
     .then( user => {        // successful inserted a new user...
         done(null, user)    // callback to authenticate and provide JWT to user...

@@ -2,9 +2,23 @@
 <!DOCTYPE html>
 <html ng-app="ratemyself">
 <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
     <script src="controllers/login.js"></script>
 </head>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="">RateMyself</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
+            <li><a href="/register">Register</a></li>
+            <li class="active"><a href="/login">Login</a></li>
+            <li><a href="/articles">Articles</a></li>
+        </ul>
+    </div>
+</nav>
 <body>
     <div class="container" ng-controller="loginController">
         <div class="col-sm-8 col-sm-offset-2">

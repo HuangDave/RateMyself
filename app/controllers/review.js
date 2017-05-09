@@ -1,4 +1,3 @@
-
 'use strict'
 angular
     .module('ratemyself', [])
@@ -6,25 +5,28 @@ angular
         $httpProvider.defaults.transformRequest.unshift($httpParamSerializerJQLikeProvider.$get())
         $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8'
     })
-    .controller('registerController', ($scope, $http, $window, $location) => {
-        $scope.register = (name, email, password, gender) => {
+    .controller('reviewController', ($scope, $http, $window, $location) => {
+        $scope.rating = (firstname, lastname, description, rating) => {
             $http({
                 method: 'POST',
-                url: '/auth/register',
+                url: 'http://localhost:8080/models/rating',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 data: {
-                    name: name,
-                    email: email,
-                    password: password,
-                    gender: gender
+                    firstname: firstname,
+                    lastname: lastname,
+                    description: description,
+                    rating: rating
                 }
             })
             .success( res => {
                 $window.sessionStorage.token = res.token
                 $window.location.assign('/')
-            })
+            }
+
+            )
             .error( error => {
                 alert('login failed: ' + JSON.stringify(error))
+                window.alert("Not logged in");
             })
         }
     })

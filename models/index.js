@@ -6,13 +6,17 @@ const Sequelize = require("sequelize")
 const env       = process.env.NODE_ENV || "production"
 const config    = require('../config/config')[env].db
 
-//const logging = env == 'test' ? true : false
+const logger = require('../config/logger')
 
-const sequelize = new Sequelize('database', 'username', 'password', {
+var options = {
     dialect: 'sqlite',
     logging: false,
     storage: config.connection
-})
+}
+
+if (env == 'test') options.logging = logger.log
+
+const sequelize = new Sequelize('database', 'username', 'password', options)
 
 var db = {}
 

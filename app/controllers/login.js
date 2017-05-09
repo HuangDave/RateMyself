@@ -10,7 +10,7 @@ angular
         $scope.login = (email, password) => {
             $http({
                 method: 'POST',
-                url: 'http://localhost:8080/auth/login',
+                url: '/auth/login',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 data: {
                     email: email,
@@ -18,8 +18,9 @@ angular
                 }
             })
             .success( res => {
+                $window.sessionStorage.uid = res.user.uid
                 $window.sessionStorage.token = res.token
-                $location.path('/')
+                $window.location.assign('/')
             })
             .error( error => {
                 alert('login failed: ' + JSON.stringify(error))

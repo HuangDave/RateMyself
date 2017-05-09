@@ -20,7 +20,7 @@ router
     .post('/', (req, res, next) => {
         const uid = req.body.uid
         const rid = req.body.rid
-        const description = req.params.description
+        const description = req.body.description
         Dispute.create({
                 rid: rid,
                 uid: uid,
