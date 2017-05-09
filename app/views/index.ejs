@@ -65,12 +65,10 @@
     <div class="container" ng-controller="homeController" ng-init="reload()">
         <table>
             <tr>
-                <th>UID</th>
                 <th>NAME</th>
                 <th>DESCRIPTION</th>
             </tr>
             <tr ng-repeat="user in users">
-                <td>{{user.uid}}</td>
                 <td>{{user.name}}</td>
                 <td>{{user.description}}</td>
             </tr>
