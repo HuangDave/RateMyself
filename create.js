@@ -10,7 +10,8 @@ Promise.all([
         models.Rating.sync({ force: false }),
         models.Dispute.sync({ force: false }),
         models.Photo.sync({ force: false }),
-        models.Tag.sync({ force: false })
+        models.Tag.sync({ force: false }),
+        models.Feedback.sync({ force: false })
     ].map( sync => {
         return sync
 }))
@@ -21,6 +22,7 @@ Promise.all([
             name: user.name,
             email: user.email,
             password: user.password,
+            gender: user.gender,
             description: user.description
         })
     }))

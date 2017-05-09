@@ -48,7 +48,8 @@ function register(req, email, password, done) {
     User.create({
         email: email,
         password: password,
-        name: req.body.name
+        name: req.body.name,
+        gender: req.body.gender
     })
     .then( user => {        // successful inserted a new user...
         done(null, user)    // callback to authenticate and provide JWT to user...

@@ -8,7 +8,7 @@ angular
         $scope.reload = () => {
             $http({
                 method: 'GET',
-                url: 'http://localhost:8080/user/all?limit=50',
+                url: '/user/all?limit=50',
                 headers: {'Content-Type': 'application/json'}
             })
             .success( res => {
@@ -21,9 +21,13 @@ angular
     })
     .controller('searchController', ($scope, $http, $window) => {
         $scope.search = () => {
+            if ($scope.name.length < 2) {
+                $scope.query = []
+                return
+            }
             $http({
                 method: 'GET',
-                url: 'http://localhost:8080/user/all?name='+$scope.name+'&limit=50',
+                url: '/user/all?name='+$scope.name+'&limit=50',
                 headers: {'Content-Type': 'application/json'}
             })
             .success( res => {

@@ -7,15 +7,17 @@ angular
         $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8'
     })
     .controller('registerController', ($scope, $http, $window, $location) => {
-        $scope.register = (name, email, password) => {
+        $scope.register = (name, email, password, gender) => {
+            alert(gender)
             $http({
                 method: 'POST',
-                url: 'http://localhost:8080/auth/register',
+                url: '/auth/register',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 data: {
                     name: name,
                     email: email,
-                    password: password
+                    password: password,
+                    gender: gender
                 }
             })
             .success( res => {

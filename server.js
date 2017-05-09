@@ -33,7 +33,6 @@ app
     .use(passport.initialize())
     .use(passport.session())
 
-    //.get('/', (req, res, next) => res.render('index'))
     .use('/', index)
     .use('/auth', authRouter)
     .use('/user', userRouter)

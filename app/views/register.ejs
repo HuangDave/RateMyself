@@ -16,6 +16,17 @@
     </head>
     <body>
 
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="">RateMyself</a>
+            </div>
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="/">Home</a></li>
+              <li><a href="/register">Register</a></li>
+            </ul>
+        </nav>
+
         <div class="container" ng-controller='registerController'>
             <div class="col-sm-8 col-sm-offset-2">
 
@@ -36,10 +47,14 @@
                     </div>
 
                     <div class="form-group">
-                         <input type="password" class="form-control" placeholder="Confirm Password" name="password2" ng-model="user.password2">
+                        Gender
+                        <select name="gender" ng-model="user.gender">
+                          <option value="Male">M</option>
+                          <option value="Female">F</option>
+                        </select>
                     </div>
 
-                    <button type="submit" class="btn btn-default" ng-click="register(user.name, user.email, user.password)">Register</button>
+                    <button type="submit" class="btn btn-default" ng-click="register(user.name, user.email, user.password, user.gender)">Register</button>
 
                 </form>
 

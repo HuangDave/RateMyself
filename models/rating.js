@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
 
     const User = sequelize.import('./user')
     const Dispute = sequelize.import('./dispute')
+    const Feedback = sequelize.import('./feedback')
 
     _this = sequelize.define('Rating', {
         rid:         { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
@@ -27,9 +28,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         rating:      { type: DataTypes.INTEGER.UNSIGNED, allowNull: false, validate: { min: 0, max: 5 } },
-        description: { type: DataTypes.STRING, allowNull: false },
-        not_helpful: { type: DataTypes.INTEGER.UNSIGNED, allowNull: false, defaultValue: 0 },
-        helpful:     { type: DataTypes.INTEGER.UNSIGNED, allowNull: false, defaultValue: 0 }
+        description: { type: DataTypes.STRING, allowNull: false }
 
     }, {
         classMethods: {
@@ -52,55 +51,27 @@ module.exports = (sequelize, DataTypes) => {
                             .then( result => {
                                 return Dispute.findAll({ where: { rid: result.rid } })
                                     .then( disputes => {
-                                        return Promise.all(disputes.map(d => {
-                                            return Dispute.serialize(d)
-                                        }))
+                                        return Promise.all(disputes.map( d => { return Dispute.serialize(d) }))
                                         .then( serializedData => {
                                             result.disputes = serializedData
                                             return result
                                         })
                                     })
                             })
+                            .then( result => {
+                                return Feedback.findOne({ where: { rid: result.rid } })
+                                        .then( feedback => {
+                                            result.feedback = feedback
+                                            return result
+                                        })
+                            })
             }
         },
         hooks: {
-            beforeUpdate: updateHook.before,
-            afterUpdate: updateHook.after
+            afterCreate: (rating, next) => { return Feedback.create({ rid: rating.rid }) }
         },
         timestamps: true,
         tableName: 'Rating'
     })
     return _this
-}
-
-serialize = (rating) =
-
-updateHook = {
-    before: (rating, options, next) => {
-        console.log('Rating before update hook options: ' + JSON.stringify(options))
-        console.log('Rating before update hook rating: ' + JSON.stringify(rating))
-        if (options.fields.includes('ishelpful')) {
-            // TODO: prevent a user from providing more than one feedback
-            console.log('update includes ishelpful');
-            next()
-        } else {
-            console.log('update doesnt include ishelpful');
-            next()
-        }
-    },
-    after: (rating, options, next) => {
-        console.log('Rating after update hook options: ' + JSON.stringify(options))
-        console.log('Rating after update hook rating: ' + JSON.stringify(rating))
-        if (options.fields.includes('ishelpful')) {
-            _this.otherAssociations.Feedback.create({
-
-                })
-                .then( feedback => {
-                    console.log('Rating after update hook - feedback added for rating: ' + JSON.stringify(feedback))
-                    next()
-                })
-        } else {
-            next()
-        }
-    }
 }

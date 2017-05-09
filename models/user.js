@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
                 key: 'pid'
             }
         },
+        gender:         { type: DataTypes.STRING, allowNull: false, defaultValue: 'N/A'},
         description:    { type: DataTypes.STRING }
 
     }, {

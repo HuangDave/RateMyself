@@ -10,7 +10,7 @@ angular
         $scope.login = (email, password) => {
             $http({
                 method: 'POST',
-                url: 'http://localhost:8080/auth/login',
+                url: '/auth/login',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 data: {
                     email: email,

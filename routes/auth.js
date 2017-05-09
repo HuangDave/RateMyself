@@ -14,6 +14,7 @@ router
     // @param {String} name
     // @param {String} email
     // @param {String} password
+    // @param {String} gender - Either "Male" or "Female"
     //
     // @return {Object} On success, returns an object consisting of the user info and a JWT
     .post("/register", passport.authenticate("local-signup", {

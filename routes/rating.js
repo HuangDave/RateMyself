@@ -5,6 +5,7 @@ const passport = require('../config/passport')
 
 const User = require('../models').User
 const Rating = require('../models').Rating
+const Feedback = require('../models').Feedback
 
 router
 
@@ -81,11 +82,7 @@ router
     // @param {String}  rid       -
     // @body  {Boolean} ishelpful -
     .post('/:rid/helpfulness', (req,res,next) => {
-        Rating.findOne({ where: { rid: req.params.rid } })
-            .then( rating => {
-                const update = req.body.ishelpful ? 'helpful' : 'not_helpful'
-                return rating.increment(update)//.sync()
-            })
+        Feedback.incrementFor(req.params.rid, req.body.ishelpful)
             .then( result => {
                 res.status(200).send()
             })

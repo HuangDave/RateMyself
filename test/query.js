@@ -5,6 +5,9 @@ const app = require('../server')
 
 const User = require('../models').User
 const Rating = require('../models').Rating
+const Dispute = require('../models').Dispute
+
+const logger = require('../config/logger')
 
 describe("Query", () => {
 
@@ -12,86 +15,110 @@ describe("Query", () => {
 
         it('Find a user with uid 13b16c46-91ba-4c58-a1ae-f00174fd6105', done => {
             User.findAll({ where: { uid: '13b16c46-91ba-4c58-a1ae-f00174fd6105' } })
-                .then( result => {
-                    assert(result[0].uid == '13b16c46-91ba-4c58-a1ae-f00174fd6105')
-                    console.log(JSON.stringify(result))
-                    done()
-                })
+            .then( result => {
+                assert(result[0].uid == '13b16c46-91ba-4c58-a1ae-f00174fd6105')
+                logger.log(JSON.stringify(result))
+                done()
+            })
         })
 
         it('Find a user named Lynda West', done => {
             User.findAll({ where: { name: 'Lynda West' } })
-                .then( result => {
-                    assert(result)
-                    console.log(JSON.stringify(result))
-                    done()
-                })
+            .then( result => {
+                assert(result)
+                logger.log(JSON.stringify(result))
+                done()
+            })
+        })
+
+        it('Find 10 male users.', done => {
+            User.findAll({
+                where: { gender: 'Male' },
+                limit: 10
+            })
+            .then( result => {
+                assert(result.length == 10)
+                logger.log(JSON.stringify(result))
+                done()
+            })
+        })
+
+        it('Find 10 female users.', done => {
+            User.findAll({
+                where: { gender: 'Female' },
+                limit: 10
+            })
+            .then( result => {
+                assert(result.length == 10)
+                logger.log(JSON.stringify(result))
+                done()
+            })
         })
 
         it('Find a user with the email bobbihobbs@caxt.com', done => {
             User.findAll({
-                    where: { email: 'bobbihobbs@caxt.com' }
-                })
-                .then( result => {
-                    assert(result[0].uid == "5acdf844-f2e9-4797-bf37-50b4bf85a173")
-                    console.log(JSON.stringify(result))
-                    done()
-                })
+                where: { email: 'bobbihobbs@caxt.com' }
+            })
+            .then( result => {
+                assert(result[0].uid == "5acdf844-f2e9-4797-bf37-50b4bf85a173")
+                logger.log(JSON.stringify(result))
+                done()
+            })
         })
 
         it('Find 5 users with excepteur in their description', done => {
             User.findAll({
-                    where: {
-                        description: {
-                            $like: '%excepteur%'
-                        }
-                    },
-                    limit: 5
-                })
-                .then( result => {
-                    console.log(result.length)
-                    console.log(JSON.stringify(result))
-                    done()
-                })
+                where: {
+                    description: {
+                        $like: '%excepteur%'
+                    }
+                },
+                limit: 5
+            })
+            .then( result => {
+                logger.log(result.length)
+                logger.log(JSON.stringify(result))
+                done()
+            })
         })
 
         it('Find 5 users with caxt emails', done => {
             User.findAll({
-                    where: { email: { $like: '%caxt.com%' } },
-                    limit: 5
-                })
-                .then( result => {
-                    assert(result.length == 5)
-                    console.log(JSON.stringify(result))
-                    done()
-                })
+                where: { email: { $like: '%caxt.com%' } },
+                limit: 5
+            })
+            .then( result => {
+                assert(result.length == 5)
+                logger.log(JSON.stringify(result))
+                done()
+            })
         })
 
         it('Find users named Stanley or Christine', done => {
             User.findAll({
-                    where: {
-                        name: {
-                            $or: [ { $like: '%Stanley%' }, { $like: '%Christine%' } ]
-                        }
+                where: {
+                    name: {
+                        $or: [ { $like: '%Stanley%' }, { $like: '%Christine%' } ]
                     }
-                })
-                .then( result => {
-                    console.log(result.length)
-                    console.log(JSON.stringify(result))
-                    done()
-                })
+                }
+            })
+            .then( result => {
+                logger.log(result.length)
+                logger.log(JSON.stringify(result))
+                done()
+            })
         })
 
         it('Find the two newest users.', done => {
             User.findAll({
-                    limit: 2,
-                    order: [ [ 'createdAt', 'DESC' ] ]
-                })
-                .then( result => {
-                    console.log(result.length)
-                    console.log(JSON.stringify(result))
-                    done()
-                })
+                limit: 2,
+                order: [ [ 'createdAt', 'DESC' ] ]
+            })
+            .then( result => {
+                logger.log(result.length)
+                logger.log(JSON.stringify(result))
+                done()
+            })
         })
     })
 
@@ -102,8 +129,8 @@ describe("Query", () => {
                 where: { ratee_id: '9333efbb-2618-4d92-9204-08ea4564cfae' }
             })
             .then( result => {
-                console.log(result.length)
-                console.log(JSON.stringify(result))
+                logger.log(result.length)
+                logger.log(JSON.stringify(result))
                 done()
             })
         })
@@ -113,8 +140,8 @@ describe("Query", () => {
                 where: { rating: 5 }
             })
             .then( result => {
-                console.log(result.length)
-                console.log(JSON.stringify(result))
+                logger.log(result.length)
+                logger.log(JSON.stringify(result))
                 done()
             })
         })
@@ -124,8 +151,8 @@ describe("Query", () => {
                 where: { rating: { $lte: 2 } }
             })
             .then( result => {
-                console.log(result.length)
-                console.log(JSON.stringify(result))
+                logger.log(result.length)
+                logger.log(JSON.stringify(result))
                 done()
             })
         })
@@ -138,17 +165,36 @@ describe("Query", () => {
                 order: [ [ 'createdAt', 'DESC' ] ]
             })
             .then( result => {
-                console.log(result.length)
-                console.log(JSON.stringify(result))
+                logger.log(result.length)
+                logger.log(JSON.stringify(result))
                 done()
             })
         })
 
+        it('Find the 5 most recent ratings submited by a user.')
+
         it('Find the top 5 most helpful ratings of a ratee.')
 
-        it('Find the least helpful rating of a ratee.')
+        it('Find the 5 least helpful ratings of a ratee.')
 
         it('Find ratings for a ratee that has _ in the description')
+    })
+
+    describe('Disputes', () => {
+
+        it('Find all disputes for a rating.', )
+
+        it('Find the 5 most recent disputes submited by a user.')
+    })
+
+    describe('Tags', () => {
+
+        it('Find all ratings with the tag __')
+    })
+
+    describe('User', () => {
+
+        it("Find a user's profile image.")
     })
 
 })
