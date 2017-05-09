@@ -1,5 +1,6 @@
 
-    var sequelize
+var sequelize
+
 'use strict'
 module.exports = (sequelize, DataTypes) => {
     const User = sequelize.import('./user')

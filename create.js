@@ -8,12 +8,12 @@ const disputes = data.disputes
 const feedbacks = data.feedback
 
 Promise.all([
-        models.User.sync({ force: false }),
-        models.Rating.sync({ force: false }),
-        models.Dispute.sync({ force: false }),
-        models.Photo.sync({ force: false }),
-        models.Tag.sync({ force: false }),
-        models.Feedback.sync({ force: false })
+        models.User.sync({ force: true }),
+        models.Rating.sync({ force: true }),
+        models.Dispute.sync({ force: true }),
+        models.Photo.sync({ force: true }),
+        models.Tag.sync({ force: true }),
+        models.Feedback.sync({ force: true })
     ].map( sync => {
         return sync
 }))
@@ -32,12 +32,16 @@ Promise.all([
 .then( result => {
     console.log('total user insertions: ' + result.length)
     return Promise.all(ratings.map( rating => {
-        return models.Rating.create({
+        var data = {
             rater_id: rating.rater_id,
             ratee_id: rating.ratee_id,
             rating: rating.rating,
             description: rating.description
-        })
+        }
+        if (rating.rid != undefined || rating.rid != null) {
+            data.rid = rating.rid
+        }
+        return models.Rating.create(data)
     }))
 })
 .then( result => {
@@ -46,6 +50,7 @@ Promise.all([
         return models.Dispute.create({
             did: dispute.did,
             uid: dispute.uid,
+            rid: dispute.rid,
             description: dispute.description
         })
     }))
