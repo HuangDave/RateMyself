@@ -13,14 +13,15 @@ const models = require('./models')                      // initialize/connect to
 models.User.sync({ force: false })
 models.Rating.sync({ force: false })
 models.Dispute.sync({ force: false })
-models.Photo.sync({ force: false })
-models.Tag.sync({ force: false })
+models.Articles.sync({ force: false })
+models.Feedback.sync({ force: false })
 
 const index = require('./routes/index')
 const authRouter = require('./routes/auth')
 const userRouter = require('./routes/user')
 const ratingRouter = require('./routes/rating')
 const disputeRouter = require('./routes/dispute')
+const articlesRouter = require('./routes/articles')
 
 app
     .set('view engine', 'ejs')                          // required for Heroku
@@ -38,6 +39,7 @@ app
     .use('/user', userRouter)
     .use('/rating', ratingRouter)
     .use('/dispute', disputeRouter)
+    .use('/articles', articlesRouter)
     .listen(port, () => console.log('Running on port: ' + port))
 
 module.exports = app                                    // export for use in testing

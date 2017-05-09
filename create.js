@@ -6,13 +6,13 @@ const users = data.users
 const ratings = data.ratings
 const disputes = data.disputes
 const feedbacks = data.feedback
+const articles = data.articles
 
 Promise.all([
         models.User.sync({ force: true }),
         models.Rating.sync({ force: true }),
         models.Dispute.sync({ force: true }),
-        models.Photo.sync({ force: true }),
-        models.Tag.sync({ force: true }),
+        models.Articles.sync({ force: true }),
         models.Feedback.sync({ force: true })
     ].map( sync => {
         return sync
@@ -68,7 +68,17 @@ Promise.all([
 })
 .then( result => {
     console.log('total dispute insertions: ' + result.length)
-    return
+    return Promise.all(articles.map( article => {
+        return models.Articles.create({
+            aid: article.aid,
+            title: article.title,
+            article: article.article
+        })
+    }))
+    .then( result => {
+        console.log('total article insertions: ' + result.length)
+        return
+    })
 })
 .catch( error => {
     console.log(JSON.stringify(error))

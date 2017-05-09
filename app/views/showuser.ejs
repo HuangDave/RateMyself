@@ -120,6 +120,21 @@
         })
     </script>
 </head>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="">RateMyself</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
+            <li><a href="/register">Register</a></li>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/articles">Articles</a></li>
+        </ul>
+    </div>
+</nav>
+
 <body ng-controller="showuserC" ng-init="reload()">
     <div class="userinfo">
         <p>Name: {{user.name}}</p>

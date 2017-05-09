@@ -14,8 +14,8 @@ router
     .get('/login', (req, res, next) => {
         res.render('login')
     })
-    .get('/test', (req, res, next) => {
-        res.render('test')
+    .get('/articles', (req, res, next) => {
+        res.render('articles')
     })
     .get('/showuser/user?:id?', (req, res, next) => {
         res.render('showuser')

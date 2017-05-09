@@ -1,16 +1,58 @@
 
 <!DOCTYPE html>
 <html ng-app="ratemyself">
-    <head>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
-        <script src="controllers/articles.js"></script>
-    </head>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <script type="text/javascript">
+    angular
+    .module('ratemyself', [])
+    .controller('articlesController', ($scope, $http, $window, $location) => {
+        $scope.reload = () => {
+            $http({
+                method: 'GET',
+                url: '/articles/all',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            })
+            .success( res => {
+                $scope.articles = res
+            })
+            .error( error => {
+                alert('login failed: ' + JSON.stringify(error))
+            })
+        }
+    })
+    </script>
+    <style media="screen">
+    .cell {
+        padding: 2em;
+        margin: 2em;
+        border: 3px solid black;
+    }
+    </style>
+</head>
 
-    <body>
-        <div ng-controller="articlesController" ng-init="reload">
-            <table>
-                
-            </table>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="">RateMyself</a>
         </div>
-    </body>
+        <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
+            <li><a href="/register">Register</a></li>
+            <li><a href="/login">Login</a></li>
+            <li class="active"><a href="/articles">Articles</a></li>
+        </ul>
+    </div>
+</nav>
+
+
+<body>
+    <div ng-controller="articlesController" ng-init="reload()">
+        <div ng-repeat="a in articles" class="cell">
+            <h3>{{a.title}}</h3>
+            <p>{{a.article}}</p>
+        </div>
+    </div>
+</body>
 </html>
