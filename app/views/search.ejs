@@ -1,0 +1,58 @@
+</<!DOCTYPE html>
+<html ng-app="ratemyself">
+<head>
+	<title>Search</title>
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+<script src="controllers/index.js"></script>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="">RateMyself</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li><a href="/">Home</a></li>
+      <li><a href="/register">Register</a></li>
+      <li><a href="/review">Review</a></li>
+      <li class="active"><a href="/search">Search</a></li>
+      </ul>
+  </div>
+</nav>
+<!-- <body ng-app = "ratemyself">
+	<div ng-controller = "users">
+	<ul>
+		<h2>Results</h2>
+		<li ng-repeat = "users in user">
+			{{ user.name + ':' + 'user.uid'}}
+		</li>
+	</ul>
+	</div>
+</body> -->
+<body ng-controller="homeController" ng-init="reload()">
+    <div class="container">
+    <input type = "text" ng-model = "searchBox">
+        <table>
+            <tr>
+               
+                <th>NAME</th>
+                
+            </tr>
+            <tr ng-repeat="user in users| filter:searchBox">
+                
+                <td>{{user.name}}</td>
+                
+            </tr>
+        </table>
+    </div>
+</body>
+
+</head>
+
+
+        </div><!-- /container -->
+<!-- Angular -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+<script src="controllers/index.js"></script>
+
+</body>
+</html>

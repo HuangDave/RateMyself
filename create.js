@@ -5,6 +5,7 @@ const data = require('./test/test_data.json')
 const users = data.users
 const ratings = data.ratings
 const disputes = data.disputes
+const feedbacks = data.feedback
 
 Promise.all([
         models.User.sync({ force: false }),
@@ -32,8 +33,8 @@ Promise.all([
     console.log('total user insertions: ' + result.length)
     return Promise.all(ratings.map( rating => {
         return models.Rating.create({
-            rater_id: rating.rid,
-            ratee_id: rating.uid,
+            rater_id: rating.rater_id,
+            ratee_id: rating.ratee_id,
             rating: rating.rating,
             description: rating.description
         })
@@ -42,7 +43,7 @@ Promise.all([
 .then( result => {
     console.log('total rating insertions: ' + result.length)
     return Promise.all(disputes.map( dispute => {
-        return models.Disputes.create({
+        return models.Dispute.create({
             did: dispute.did,
             uid: dispute.uid,
             description: dispute.description

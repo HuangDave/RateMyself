@@ -8,6 +8,7 @@ const Rating = require('../models').Rating
 const Dispute = require('../models').Dispute
 
 const logger = require('../config/logger')
+const sequelize = require('../models/')
 
 describe("Query", () => {
 
@@ -182,10 +183,76 @@ describe("Query", () => {
 
     describe('Disputes', () => {
 
-        it('Find all disputes for a rating.', )
+        it('Find all disputes for a rating.',  done => {
+            Dispute.findAll({
+                where: { rid: "01de70ef-20b0-4d9a-bae1-01944955b875"}
 
-        it('Find the 5 most recent disputes submited by a user.')
+            })
+            .then( result => {
+                logger.log(result.length)
+                logger.log(JSON.stringify(result))
+                done()
+            })
+        })
+
+         it('Find the 5 most recent disputes submited by a user.', done => {
+            Dispute.findAll({
+                where: { uid: "f10fa00f-83bc-47b7-8b68-b14c2d3a6691" },
+                limit: 5,
+                order: [ [ 'createdAt', 'DESC' ] ]
+            })
+         .then( result => {
+                logger.log(result.length)
+                logger.log(JSON.stringify(result))
+                done()
+            })
     })
+    it('Find the 5 most recent disputes submited by a user.', done => {
+            Dispute.findAll({
+                where: { uid: "65d23904-89ee-470d-a794-22a9fd57301d" },
+                limit: 5,
+                order: [ [ 'createdAt', 'DESC' ] ]
+            })
+         .then( result => {
+                logger.log(result.length)
+                logger.log(JSON.stringify(result))
+                done()
+            })
+    })
+    it('Find the 5 most oldest disputes submited by a user.', done => {
+            Dispute.findAll({
+                where: { uid: "65d23904-89ee-470d-a794-22a9fd57301d" },
+                limit: 5,
+                order: [ [ 'createdAt', 'ASC' ] ]
+            })
+         .then( result => {
+                logger.log(result.length)
+                logger.log(JSON.stringify(result))
+                done()
+            })
+    })
+    it('Find the 5 most oldest disputes submited by a user.', done => {
+            Dispute.findAll({
+                where: { uid: "f10fa00f-83bc-47b7-8b68-b14c2d3a6691" },
+                limit: 5,
+                order: [ [ 'createdAt', 'ASC' ] ]
+            })
+         .then( result => {
+                logger.log(result.length)
+                logger.log(JSON.stringify(result))
+                done()
+            })
+    })
+    it('Find all users who dispute', done => {
+           sequelize.sequelize.query ("Select DISTINCT s.uid FROM User s, Dispute d Where d.uid = s.uid"
+            )
+            .then( result => {
+                logger.log(result.length)
+                logger.log(JSON.stringify(result))
+                done()
+            })
+        })
+})
 
     describe('Tags', () => {
 
@@ -196,5 +263,6 @@ describe("Query", () => {
 
         it("Find a user's profile image.")
     })
+
 
 })
